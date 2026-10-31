@@ -1,0 +1,788 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Common Ground</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a dark editorial site of separate pages. Two overlapping circles (your experience, mine) form the lens of "common ground" and anchor the identity. Gold carries emphasis, violet carries the second voice. */
+:root{
+  --bg:#08070c;
+  --surface:#110f18;
+  --raised:#181522;
+  --line:#2a2535;
+  --line-soft:#1e1a28;
+  --ink:#f5f1f9;
+  --soft:#d6d0de;
+  --muted:#a59eb1;
+  --gold:#e3bf72;
+  --gold-dim:#8a7342;
+  --violet:#a58bf2;
+  --violet-dim:#4a3d78;
+  --on-accent:#15111d;
+  --bar:rgba(8,7,12,.9);
+  --ok:#8fd19a;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --max:1180px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(60rem 36rem at 90% -8%,rgba(165,139,242,.13),transparent 62%),
+    radial-gradient(48rem 30rem at -8% 92%,rgba(227,191,114,.07),transparent 60%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.65;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.wrap{width:100%;max-width:var(--max);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+p{margin:0 0 1em;color:var(--muted)}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.025em;font-variation-settings:"opsz" 144}
+h1{font-size:clamp(2.8rem,8.2vw,6rem);line-height:1.0}
+h2{font-size:clamp(2.1rem,5vw,3.5rem);line-height:1.08}
+h1 em,h2 em{font-style:italic;color:var(--gold);font-weight:400}
+h3{font-family:var(--body);font-weight:700;font-size:1.15rem;line-height:1.3;letter-spacing:-.005em}
+.label{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.label.violet{color:var(--violet)}
+.lead{font-size:clamp(1.05rem,2vw,1.25rem);line-height:1.75;color:var(--soft);max-width:38rem}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bar);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.mark{flex:0 0 auto;width:40px;height:40px;border:1px solid var(--gold-dim);border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:1.05rem;color:var(--gold);position:relative}
+.mark::after{content:"";position:absolute;inset:-5px 5px -5px -5px;border:1px solid var(--violet-dim);border-radius:50%;z-index:-1}
+.brand-name{display:block;font-family:var(--display);font-size:1.15rem;line-height:1.1;letter-spacing:-.01em}
+.brand-sub{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.navlinks{display:flex;align-items:center;gap:2px}
+.navlinks a{padding:9px 12px;border-radius:8px;font-size:.88rem;font-weight:500;color:var(--soft);white-space:nowrap;position:relative;transition:color .2s,background .2s}
+.navlinks a:hover{color:var(--ink);background:var(--raised)}
+.navlinks a[aria-current="page"]{color:var(--ink)}
+.navlinks a[aria-current="page"]::after{content:"";position:absolute;left:12px;right:12px;bottom:3px;height:2px;background:var(--gold);border-radius:2px}
+.menu-btn{display:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer;font-size:.85rem;font-weight:600}
+
+/* pages */
+.page{display:none}
+.page.active{display:block;animation:pagein .4s ease both}
+@keyframes pagein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.section{padding-block:clamp(48px,8vw,96px)}
+.section.tight{padding-block:clamp(32px,5vw,56px)}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* buttons */
+.btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:700;font-size:.92rem;border:1px solid var(--gold);background:var(--gold);color:var(--on-accent);cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(227,191,114,.55)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--gold-dim);box-shadow:none;background:var(--surface)}
+.arrow{display:inline-block;transition:transform .2s}
+.btn:hover .arrow{transform:translateX(4px)}
+
+/* home */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,5vw,64px);align-items:center;padding-block:clamp(36px,7vw,84px) clamp(40px,6vw,72px)}
+.hero h1{margin:22px 0 26px}
+.venn{width:100%;height:auto;display:block;overflow:visible}
+.venn .a{animation:driftA 11s ease-in-out infinite alternate}
+.venn .b{animation:driftB 13s ease-in-out infinite alternate}
+@keyframes driftA{to{transform:translate(-9px,5px)}}
+@keyframes driftB{to{transform:translate(9px,-5px)}}
+.venn text{font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.hero-caption{margin-top:6px;text-align:center;font-family:var(--display);font-style:italic;font-size:1.05rem;color:var(--soft);text-wrap:balance}
+.values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-block:1px solid var(--line)}
+.value{padding:26px 24px 28px 0}
+.value+.value{padding-left:24px;border-left:1px solid var(--line)}
+.value h3{margin:12px 0 6px}
+.value p{margin:0;font-size:.95rem}
+.glance{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:34px;counter-reset:ph}
+.glance a{display:block;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--surface);transition:border-color .25s,transform .25s}
+.glance a:hover{border-color:var(--gold-dim);transform:translateY(-3px)}
+.glance .label{display:block;margin-bottom:12px}
+.glance strong{display:block;font-size:1.02rem;margin-bottom:6px}
+.glance span.t{display:block;font-size:.88rem;color:var(--muted);line-height:1.55}
+.endband{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-block:40px 48px}
+.endband p{margin:8px 0 0;font-family:var(--display);font-size:clamp(1.5rem,3.4vw,2.2rem);color:var(--ink);line-height:1.2}
+
+/* inner page headings */
+.intro{max-width:50rem;padding-top:clamp(40px,7vw,84px);padding-bottom:clamp(24px,4vw,40px)}
+.intro h2{margin:16px 0 20px}
+.intro p{font-size:1.05rem;line-height:1.8;max-width:42rem}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:start}
+.split .copy p{line-height:1.85}
+.copy h3{margin-bottom:12px}
+.quote{border-left:2px solid var(--gold);padding:6px 0 6px 24px;font-family:var(--display);font-size:clamp(1.4rem,2.8vw,1.95rem);line-height:1.4;color:var(--ink)}
+.quote em{color:var(--gold)}
+
+/* objectives */
+.objectives{list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;border-top:1px solid var(--line)}
+.objectives li{padding:15px 0 15px 30px;border-bottom:1px solid var(--line);position:relative;color:var(--soft);font-size:.98rem}
+.objectives li::before{content:"";position:absolute;left:2px;top:23px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--gold)}
+.objectives li::after{content:"";position:absolute;left:8px;top:23px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--violet);opacity:.8}
+
+/* phases */
+.phases{display:grid;gap:0;margin-top:26px;border-top:1px solid var(--line)}
+.phase{display:grid;grid-template-columns:96px minmax(0,1fr) minmax(0,1.2fr);gap:24px;padding:28px 0;border-bottom:1px solid var(--line)}
+.phase .when{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.06em;margin-top:6px}
+.phase h3{font-size:1.25rem;margin-bottom:6px}
+.phase .tag{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--violet);border:1px solid var(--violet-dim);padding:3px 9px;border-radius:999px}
+.phase ul{margin:0;padding:0 0 0 18px;color:var(--muted);font-size:.95rem}
+.phase li{margin-bottom:5px}
+.phase li::marker{color:var(--gold-dim)}
+
+/* session bar */
+.session{margin-top:20px;padding:26px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.session-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.session-head h3{font-size:1.1rem}
+.bar{display:flex;gap:4px;height:58px}
+.seg{display:grid;place-items:center;border-radius:8px;font-family:var(--mono);font-weight:500;font-size:.88rem;color:var(--on-accent);min-width:0}
+.seg.q{background:var(--line);color:var(--ink)}
+.seg.g{background:var(--gold)}
+.seg.v{background:var(--violet)}
+.seg.g:nth-of-type(4){background:#c9a65d}
+.agenda{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 28px}
+.agenda li{display:flex;gap:12px;font-size:.92rem;color:var(--soft)}
+.agenda b{font-family:var(--mono);font-weight:500;color:var(--gold);min-width:3.1em}
+.session small{display:block;margin-top:18px;color:var(--muted);font-size:.84rem}
+
+/* topics */
+.topics{border-top:1px solid var(--line)}
+.topic{display:grid;grid-template-columns:72px minmax(0,1fr) minmax(0,1.15fr);gap:28px;padding:36px 0;border-bottom:1px solid var(--line)}
+.topic .n{font-family:var(--display);font-size:2.6rem;line-height:1;color:var(--gold);font-style:italic}
+.topic h3{font-size:1.4rem;margin-bottom:10px;letter-spacing:-.01em}
+.topic p{margin:0;font-size:.98rem}
+.learn h4{font-family:var(--mono);font-weight:500;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:12px}
+.learn ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.learn li{position:relative;padding-left:22px;font-size:.95rem;color:var(--soft)}
+.learn li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.learn .expect{margin-top:14px;font-size:.88rem;color:var(--muted);padding-top:12px;border-top:1px dashed var(--line)}
+.note{border:1px solid var(--violet-dim);background:rgba(165,139,242,.06);border-radius:14px;padding:22px 24px;margin-block:8px}
+.note strong{display:block;font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:8px;font-weight:500}
+.note p{margin:0;font-size:.95rem;line-height:1.75;color:var(--soft)}
+
+/* council */
+.resps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 32px;border-top:1px solid var(--line);margin-top:8px}
+.resp{padding:22px 0;border-bottom:1px solid var(--line)}
+.resp h3{font-size:1rem;margin-bottom:6px}
+.resp p{margin:0;font-size:.92rem;line-height:1.7}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:22px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:480px}
+th,td{text-align:left;padding:14px 20px;border-bottom:1px solid var(--line-soft);font-size:.93rem}
+th{font-family:var(--mono);font-weight:500;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:var(--raised)}
+td{color:var(--soft)}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--ink);font-weight:600}
+.small-note{font-size:.84rem;margin-top:14px}
+.road{list-style:none;margin:26px 0 0;padding:0;counter-reset:r}
+.road li{counter-increment:r;position:relative;padding:0 0 30px 62px}
+.road li::before{content:counter(r);position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;border:1px solid var(--gold-dim);background:var(--bg);display:grid;place-items:center;font-family:var(--display);font-size:1.1rem;color:var(--gold)}
+.road li::after{content:"";position:absolute;left:19.5px;top:46px;bottom:6px;width:1px;background:var(--line)}
+.road li:last-child{padding-bottom:0}
+.road li:last-child::after{display:none}
+.road h3{font-size:1.05rem;margin-bottom:4px;padding-top:7px}
+.road p{margin:0;font-size:.94rem}
+
+/* team */
+.team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:6px}
+.card{border:1px solid var(--gold-dim);border-radius:18px;padding:28px 26px 30px;background:linear-gradient(155deg,rgba(227,191,114,.09),var(--surface) 55%);position:relative;transition:transform .3s,border-color .3s}
+.card:hover{transform:translateY(-4px);border-color:var(--gold)}
+.card::before{content:"";position:absolute;inset:6px;border:1px solid rgba(227,191,114,.12);border-radius:13px;pointer-events:none}
+.person{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.initials{flex:0 0 auto;width:56px;height:56px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--display);font-size:1.3rem;color:var(--gold);background:var(--bg)}
+.person h3{font-size:1.1rem;margin-bottom:4px}
+.role{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--violet)}
+.card p{margin:0;font-size:.94rem;line-height:1.75}
+
+/* voice */
+.voice{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(24px,5vw,56px);align-items:start}
+.aside{border-left:1px solid var(--line);padding-left:26px}
+.aside h3{font-family:var(--display);font-weight:400;font-size:1.6rem;line-height:1.35;margin-bottom:16px}
+.aside p{font-size:.95rem;line-height:1.8}
+.aside strong{color:var(--ink)}
+.panel{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:clamp(20px,3vw,32px)}
+.demo{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);padding:4px 10px;border-radius:999px;margin-bottom:14px}
+.panel h3{font-size:1.3rem;margin-bottom:6px}
+.field{margin:20px 0}
+.field label{display:block;font-size:.88rem;font-weight:600;margin-bottom:8px}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:13px 14px;font-size:1rem}
+.field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:40px}
+.field textarea{min-height:150px;resize:vertical;line-height:1.6}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(227,191,114,.18)}
+.field small{display:block;margin-top:8px;color:var(--muted);font-size:.8rem;line-height:1.6}
+.count{display:flex;justify-content:space-between;gap:12px}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:.88rem;color:var(--muted);line-height:1.7;margin:20px 0}
+.check input{margin-top:5px;accent-color:var(--gold);width:16px;height:16px;flex:0 0 auto}
+.status{display:none;border:1px solid #3f6a47;background:rgba(143,209,154,.08);border-radius:12px;padding:16px 18px;margin-top:18px;color:#dcf3e0;font-size:.92rem;line-height:1.75}
+.status.show{display:block}
+.warning{font-size:.82rem;color:#dccaa0;line-height:1.7;margin:16px 0 0}
+.guard{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:6px}
+.guard article{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--surface)}
+.guard h3{margin-bottom:10px}
+.guard ol{margin:0;padding:0 0 0 20px;color:var(--muted);font-size:.93rem;display:grid;gap:8px}
+.guard ol li::marker{color:var(--gold);font-family:var(--mono)}
+.guard p{font-size:.93rem;margin:0}
+.help{border:1px solid var(--gold-dim);background:rgba(227,191,114,.06);border-radius:14px;padding:22px 24px;margin-top:18px}
+.help strong{display:block;color:var(--gold);font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.help p{margin:0;color:var(--soft);font-size:.95rem;line-height:1.75}
+
+/* faq */
+.faq{max-width:50rem;margin-top:12px}
+details{border-top:1px solid var(--line);padding:20px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;font-weight:600;font-size:1.02rem;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:0 0 auto;color:var(--gold);font-family:var(--mono);font-size:1.3rem;line-height:1}
+details[open] summary::after{content:"\2212"}
+details p{margin:12px 36px 0 0;line-height:1.85;font-size:.97rem}
+
+footer{border-top:1px solid var(--line-soft);padding-block:28px calc(28px + 8px);color:var(--muted);font-size:.8rem}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 28px}
+
+/* welcome */
+.welcome{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;padding:24px max(24px,env(safe-area-inset-right,0px)) 24px max(24px,env(safe-area-inset-left,0px));transition:opacity .7s ease,visibility .7s ease;overflow:hidden}
+.welcome::before{content:"";position:absolute;width:min(70vw,560px);aspect-ratio:1;border-radius:50%;border:1px solid var(--violet-dim);left:50%;top:50%;transform:translate(-62%,-50%);opacity:.5;animation:wring 1.6s ease both}
+.welcome::after{content:"";position:absolute;width:min(70vw,560px);aspect-ratio:1;border-radius:50%;border:1px solid var(--gold-dim);left:50%;top:50%;transform:translate(-38%,-50%);opacity:.5;animation:wring 1.6s .15s ease both}
+@keyframes wring{from{opacity:0;transform:translate(-50%,-50%) scale(.7)}}
+.welcome.done{opacity:0;visibility:hidden;pointer-events:none}
+.welcome-inner{position:relative;z-index:1;width:min(780px,100%);text-align:center}
+.wl{font-family:var(--display);font-size:clamp(2rem,6vw,4rem);line-height:1.18;letter-spacing:-.02em;opacity:0;transform:translateY(14px);animation:up .8s ease forwards}
+.wl:nth-child(2){animation-delay:.45s}
+.wl:nth-child(3){animation-delay:.9s}
+.wl em{color:var(--gold)}
+.ws{opacity:0;animation:up .7s 1.4s ease forwards;margin:30px 0 26px}
+.welcome .btn{opacity:0;animation:up .6s 1.7s ease forwards}
+@keyframes up{to{opacity:1;transform:none}}
+
+@media (max-width:1040px){
+  .navlinks a{padding:9px 8px;font-size:.82rem}
+}
+@media (max-width:920px){
+  .menu-btn{display:block}
+  .navlinks{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--surface);border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+  .navlinks.open{display:flex}
+  .navlinks a{padding:14px 10px;font-size:1rem;border-bottom:1px solid var(--line-soft);border-radius:0}
+  .navlinks a[aria-current="page"]::after{left:10px;right:auto;width:28px;bottom:8px}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .split,.voice,.guard{grid-template-columns:minmax(0,1fr)}
+  .glance{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .resps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .topic{grid-template-columns:56px minmax(0,1fr)}
+  .topic .learn{grid-column:2}
+  .phase{grid-template-columns:minmax(0,1fr);gap:10px}
+  .agenda{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .values{grid-template-columns:minmax(0,1fr)}
+  .value,.value+.value{padding:22px 0;border-left:0;border-bottom:1px solid var(--line)}
+  .value:last-child{border-bottom:0}
+  .glance,.team,.resps,.objectives,.agenda{grid-template-columns:minmax(0,1fr)}
+  .aside{padding-left:18px}
+  .topic{grid-template-columns:minmax(0,1fr);gap:14px}
+  .topic .learn{grid-column:auto}
+  .brand-sub{display:none}
+  .bar{height:48px}
+  .seg{font-size:.78rem}
+  details p{margin-right:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.01ms!important}
+}
+</style>
+
+<div class="welcome" id="welcome" role="dialog" aria-label="Welcome">
+  <div class="welcome-inner">
+    <div class="wl">Welcome, my dear <em>21K peers.</em></div>
+    <div class="wl">Your voice matters.</div>
+    <div class="wl">Your dignity matters.</div>
+    <div class="label ws">21K School Student Council &middot; 2026&ndash;2027</div>
+    <button class="btn" id="enterSite" type="button">Enter Common Ground <span class="arrow" aria-hidden="true">&rarr;</span></button>
+  </div>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#home" aria-label="Common Ground home">
+      <span class="mark">21</span>
+      <span><span class="brand-name">Common Ground</span><span class="brand-sub">21K School Student Council</span></span>
+    </a>
+    <nav class="navlinks" id="navlinks" aria-label="Main">
+      <a href="#home" data-page="home">Home</a>
+      <a href="#initiative" data-page="initiative">Our Initiative</a>
+      <a href="#topics" data-page="topics">Topics</a>
+      <a href="#council" data-page="council">The Council</a>
+      <a href="#team" data-page="team">Our Team</a>
+      <a href="#voice" data-page="voice">Your Voice</a>
+      <a href="#faqs" data-page="faqs">FAQs</a>
+    </nav>
+    <button class="menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="navlinks">Menu</button>
+  </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section class="page active" id="p-home" aria-label="Home">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <div class="label">A student-led awareness initiative &middot; 2026&ndash;2027</div>
+        <h1>A community where <em>respect comes first.</em></h1>
+        <p class="lead">The 21K Student Council is opening a thoughtful conversation about gender, dignity, fairness, boundaries and the way we treat one another, online and offline. It is for every student.</p>
+        <div class="btnrow">
+          <a class="btn" href="#initiative">Why this matters <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="btn ghost" href="#topics">Explore the five topics</a>
+        </div>
+      </div>
+      <figure style="margin:0">
+        <svg class="venn" viewBox="0 0 480 380" role="img" aria-label="Two overlapping circles. The shared space between them is labelled common ground.">
+          <defs>
+            <clipPath id="lens"><circle cx="190" cy="190" r="132"/></clipPath>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#e3bf72" stop-opacity=".5"/><stop offset="100%" stop-color="#e3bf72" stop-opacity=".12"/></radialGradient>
+          </defs>
+          <g class="a">
+            <circle cx="190" cy="190" r="132" fill="#a58bf2" fill-opacity=".1" stroke="#a58bf2" stroke-opacity=".75" stroke-width="1.4"/>
+          </g>
+          <g class="b">
+            <circle cx="290" cy="190" r="132" fill="#e3bf72" fill-opacity=".07" stroke="#e3bf72" stroke-opacity=".75" stroke-width="1.4"/>
+          </g>
+          <g clip-path="url(#lens)"><circle cx="290" cy="190" r="132" fill="url(#glow)"/></g>
+          <text x="118" y="192" text-anchor="middle" font-size="11" fill="#d6d0de">Your</text>
+          <text x="118" y="208" text-anchor="middle" font-size="11" fill="#d6d0de">experience</text>
+          <text x="362" y="192" text-anchor="middle" font-size="11" fill="#d6d0de">Their</text>
+          <text x="362" y="208" text-anchor="middle" font-size="11" fill="#d6d0de">experience</text>
+          <text x="240" y="186" text-anchor="middle" font-size="11" fill="#f5f1f9">Common</text>
+          <text x="240" y="204" text-anchor="middle" font-size="11" fill="#f5f1f9">ground</text>
+          <text x="240" y="352" text-anchor="middle" font-size="10" fill="#a59eb1">Dignity sits in the overlap</text>
+        </svg>
+        <figcaption class="hero-caption">We may not share the same experiences. We can still share the same standard of dignity.</figcaption>
+      </figure>
+    </div>
+
+    <div class="values">
+      <div class="value"><div class="label">Dignity</div><h3>Respect without exceptions</h3><p>Fairness and respectful behaviour become the standard for everyone in school.</p></div>
+      <div class="value"><div class="label violet">Awareness</div><h3>Understand the signs</h3><p>Recognise stereotypes, crossed boundaries and unhealthy online behaviour early.</p></div>
+      <div class="value"><div class="label">Support</div><h3>Know the next step</h3><p>Learn how to reach trusted adults and approved school support routes.</p></div>
+    </div>
+  </div>
+
+  <div class="wrap section tight">
+    <div class="label">The programme at a glance</div>
+    <div class="glance">
+      <a href="#initiative"><span class="label">Phase 1</span><strong>Introduction</strong><span class="t">Announcement on the official school portal.</span></a>
+      <a href="#initiative"><span class="label violet">Phase 2 &middot; 5&ndash;7 days</span><strong>Student voice</strong><span class="t">An approved form for suggestions and questions.</span></a>
+      <a href="#initiative"><span class="label">Phase 3 &middot; 45&ndash;50 min</span><strong>Awareness session</strong><span class="t">An interactive, staff-reviewed session.</span></a>
+      <a href="#initiative"><span class="label violet">Phase 4 &middot; within a week</span><strong>Follow-up</strong><span class="t">Recap, resources and feedback.</span></a>
+    </div>
+    <div class="endband">
+      <div><div class="label">One community. Shared responsibility.</div><p>Respect is something we practise.</p></div>
+      <a class="btn" href="#voice">Share your voice <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- INITIATIVE -->
+<section class="page" id="p-initiative" aria-label="Our Initiative">
+  <div class="wrap">
+    <div class="intro">
+      <div class="label">The idea</div>
+      <h2>Why we chose to open <em>this conversation.</em></h2>
+      <p>Gender awareness deserves more than a one-day message. The council wants students to understand fairness, personal boundaries, digital responsibility and harmful stereotypes, and to know how to seek help when something does not feel right.</p>
+    </div>
+    <hr class="rule">
+    <div class="section tight">
+      <div class="split">
+        <div class="copy">
+          <h3>What we want to make possible</h3>
+          <p>A school culture where people are taken seriously, differences are handled with maturity, and nobody is pressured into sharing private experiences. Awareness should help students recognise unhealthy behaviour, support one another responsibly and know which trusted adults can help.</p>
+          <p>This initiative is for all students, regardless of gender. It does not blame one gender or favour another, and no one is asked to prove what they have experienced.</p>
+        </div>
+        <div class="quote">&ldquo;This is not about blame. It is about learning how to treat people with <em>care, fairness and respect.</em>&rdquo;</div>
+      </div>
+    </div>
+
+    <div class="section tight">
+      <div class="label">Our objectives</div>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.5rem);margin-top:12px">Eight things we want to <em>achieve.</em></h2>
+      <ul class="objectives">
+        <li>Build awareness about gender equality.</li>
+        <li>Challenge gender stereotypes and unfair treatment.</li>
+        <li>Teach personal boundaries and consent.</li>
+        <li>Improve awareness of digital safety and privacy.</li>
+        <li>Help students recognise bullying, harassment and manipulation.</li>
+        <li>Encourage respectful communication.</li>
+        <li>Make it easier to raise concerns through school channels.</li>
+        <li>Build a culture of support without judgement.</li>
+      </ul>
+    </div>
+
+    <div class="section tight">
+      <div class="label violet">How we plan to run it</div>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.5rem);margin-top:12px">Four phases, <em>all subject to school approval.</em></h2>
+      <div class="phases">
+        <div class="phase">
+          <div class="when">PHASE 1</div>
+          <div><h3>Introduction and announcement</h3><span class="tag">Official school portal</span></div>
+          <ul><li>Introduce Common Ground and explain why the council is running it.</li><li>Present the five awareness topics.</li><li>Explain how students can take part.</li></ul>
+        </div>
+        <div class="phase">
+          <div class="when">PHASE 2</div>
+          <div><h3>Student voice collection</h3><span class="tag">5&ndash;7 days</span></div>
+          <ul><li>Open a school-approved feedback form.</li><li>Allow anonymous or named submissions for suggestions, questions and topic requests.</li><li>Find out which topics students want to understand better.</li><li>Restrict access to authorised reviewers.</li></ul>
+        </div>
+        <div class="phase">
+          <div class="when">PHASE 3</div>
+          <div><h3>Awareness session</h3><span class="tag">45&ndash;50 minutes</span></div>
+          <ul><li>An interactive session in an approved school meeting or portal.</li><li>Age-appropriate and reviewed by school staff.</li><li>Uses fictional scenarios. Nobody shares personal details.</li></ul>
+        </div>
+        <div class="phase">
+          <div class="when">PHASE 4</div>
+          <div><h3>Follow-up</h3><span class="tag">Within one week</span></div>
+          <ul><li>Share a short recap through the portal.</li><li>Provide approved resources and support contacts.</li><li>Collect feedback on the session.</li><li>Identify areas that need further awareness.</li></ul>
+        </div>
+      </div>
+
+      <div class="session" aria-label="Session plan">
+        <div class="session-head"><h3>Inside the awareness session</h3><span class="label">50 minutes &middot; to scale</span></div>
+        <div class="bar" role="img" aria-label="Session split: 5, 10, 10, 10, 10 and 5 minutes">
+          <div class="seg q" style="flex:5">5</div>
+          <div class="seg g" style="flex:10">10</div>
+          <div class="seg v" style="flex:10">10</div>
+          <div class="seg g" style="flex:10">10</div>
+          <div class="seg v" style="flex:10">10</div>
+          <div class="seg q" style="flex:5">5</div>
+        </div>
+        <ul class="agenda">
+          <li><b>5 min</b><span>Introduction and purpose</span></li>
+          <li><b>10 min</b><span>Gender equality and stereotypes</span></li>
+          <li><b>10 min</b><span>Boundaries and healthy relationships</span></li>
+          <li><b>10 min</b><span>Digital safety and privacy</span></li>
+          <li><b>10 min</b><span>Bullying, support and speaking up</span></li>
+          <li><b>5 min</b><span>Questions and conclusion</span></li>
+        </ul>
+        <small>Timings are proposed and may change after review with school staff.</small>
+      </div>
+    </div>
+
+    <div class="endband">
+      <div><div class="label">Next</div><p>See what each topic covers.</p></div>
+      <a class="btn" href="#topics">Awareness topics <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- TOPICS -->
+<section class="page" id="p-topics" aria-label="Awareness Topics">
+  <div class="wrap">
+    <div class="intro">
+      <div class="label">What we want to learn together</div>
+      <h2>Five topics. One shared standard: <em>respect.</em></h2>
+      <p>These are the proposed awareness topics. Final sessions and materials will be age-appropriate and reviewed with school staff before use. Each topic below lists what students will be able to do and what to expect.</p>
+    </div>
+    <div class="topics">
+      <article class="topic">
+        <div class="n">01</div>
+        <div><h3>Gender equality and stereotypes</h3><p>Understanding gender stereotypes, unfair assumptions, equal opportunities and respectful treatment of people of any gender.</p></div>
+        <div class="learn"><h4>Students will learn to</h4><ul><li>Spot common assumptions about how boys and girls should behave, lead or learn.</li><li>Explain why equal opportunity matters in class, sport and leadership.</li><li>Respond respectfully when someone repeats an unfair assumption.</li></ul><p class="expect">Expect: a guided discussion built on fictional scenarios.</p></div>
+      </article>
+      <article class="topic">
+        <div class="n">02</div>
+        <div><h3>Boundaries and healthy relationships</h3><p>Personal boundaries, consent, pressure, trust and respect, including understanding when someone says no.</p></div>
+        <div class="learn"><h4>Students will learn to</h4><ul><li>Describe what a personal boundary is and why everyone has them.</li><li>Recognise pressure and tell it apart from respectful persuasion.</li><li>Accept another person&rsquo;s no, and say no clearly themselves.</li></ul><p class="expect">Expect: short role-play prompts with no personal disclosure.</p></div>
+      </article>
+      <article class="topic">
+        <div class="n">03</div>
+        <div><h3>Digital safety and privacy</h3><p>Online privacy, manipulation, responsible sharing and account security, and what to do when an online interaction becomes uncomfortable or unsafe.</p></div>
+        <div class="learn"><h4>Students will learn to</h4><ul><li>Strengthen account security and privacy settings.</li><li>Recognise online pressure, coercion and threats.</li><li>Stop, keep a record and tell a trusted adult, without forwarding harmful material.</li></ul><p class="expect">Expect: a practical checklist students can use the same day.</p></div>
+      </article>
+      <article class="topic">
+        <div class="n">04</div>
+        <div><h3>Bullying, harassment and bystander support</h3><p>Recognising harmful behaviour, supporting peers safely and knowing when to involve a trusted adult.</p></div>
+        <div class="learn"><h4>Students will learn to</h4><ul><li>Tell the difference between teasing, bullying and harassment.</li><li>Choose bystander actions that support a peer without adding risk.</li><li>Report a concern through the right school channel.</li></ul><p class="expect">Expect: scenario cards and a clear map of who to go to.</p></div>
+      </article>
+      <article class="topic">
+        <div class="n">05</div>
+        <div><h3>Speaking up and getting help</h3><p>How to raise concerns, listen without judgement and approach appropriate school support.</p></div>
+        <div class="learn"><h4>Students will learn to</h4><ul><li>Start a conversation with a trusted adult.</li><li>Listen to a friend without gossip and without promising secrecy.</li><li>Identify the school roles that support students.</li></ul><p class="expect">Expect: a short guide to approved support contacts.</p></div>
+      </article>
+    </div>
+    <div class="note" style="margin-top:40px">
+      <strong>How we handle sensitive topics</strong>
+      <p>We use clear ground rules, fictional learning scenarios and school guidance. No student is asked to share personal details in front of others. Sessions go ahead only with school approval.</p>
+    </div>
+    <div class="endband">
+      <div><div class="label violet">Have a topic in mind?</div><p>Tell us what you want covered.</p></div>
+      <a class="btn" href="#voice">Share your voice <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- COUNCIL -->
+<section class="page" id="p-council" aria-label="The Council">
+  <div class="wrap">
+    <div class="intro">
+      <div class="label">Our role</div>
+      <h2>Student leadership means <em>shared responsibility.</em></h2>
+      <p>The 21K Senior School Student Council brings student ideas forward, strengthens communication and organises approved initiatives. For Common Ground, the council acts as a responsible bridge between students and the school. It does not replace teachers, counsellors or safeguarding staff.</p>
+    </div>
+    <div class="section tight">
+      <div class="split">
+        <div class="copy">
+          <h3>What we commit to as a team</h3>
+          <p>We plan carefully, listen without judgement, communicate clearly and work with the appropriate school staff. We give every council member equal respect and a fair opportunity to contribute.</p>
+          <p>We will not investigate individual allegations ourselves or promise absolute secrecy. When a serious safety concern is raised, a trusted adult or designated school staff member must be involved so the student can get proper support.</p>
+        </div>
+        <div class="quote">Leadership is not about one person having all the answers. It is about <em>working together and knowing when to ask for help.</em></div>
+      </div>
+    </div>
+    <div class="resps">
+      <div class="resp"><h3>Represent students fairly</h3><p>Invite different perspectives without asking one student to speak for an entire group.</p></div>
+      <div class="resp"><h3>Plan and organise</h3><p>Prepare clear objectives, learning materials and realistic timelines for approved activities.</p></div>
+      <div class="resp"><h3>Communicate responsibly</h3><p>Use approved channels, share accurate information and avoid rumours or public accusations.</p></div>
+      <div class="resp"><h3>Protect dignity and privacy</h3><p>Keep private stories out of public posts and pass concerns on only through appropriate support routes.</p></div>
+      <div class="resp"><h3>Work with school staff</h3><p>Seek approval, follow school guidance and refer serious concerns to designated adults.</p></div>
+      <div class="resp"><h3>Reflect and improve</h3><p>Review each activity as a team and make the next step more useful, inclusive and clear.</p></div>
+    </div>
+
+    <div class="section tight">
+      <div class="label">Who does what</div>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.5rem);margin-top:12px">Responsibilities and <em>approvals.</em></h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Responsibility</th><th>Who</th></tr></thead>
+          <tbody>
+            <tr><td>Overall council coordination</td><td>President</td></tr>
+            <tr><td>Coordination support</td><td>Vice President</td></tr>
+            <tr><td>House participation</td><td>House CEOs</td></tr>
+            <tr><td>Topic and content preparation</td><td>Council team</td></tr>
+            <tr><td>Programme approval</td><td>Principal and school staff</td></tr>
+            <tr><td>Safeguarding and serious concerns</td><td>Designated school staff</td></tr>
+            <tr><td>Website and technical implementation</td><td>Website development team</td></tr>
+            <tr><td>Submission access approval</td><td>School-authorised reviewer</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small-note">These are proposed working responsibilities. They do not replace the school&rsquo;s formal roles.</p>
+    </div>
+
+    <div class="section tight">
+      <div class="label violet">Path to launch</div>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.5rem);margin-top:12px">Seven steps, <em>in this order.</em></h2>
+      <ol class="road">
+        <li><h3>Finalise the initiative proposal</h3><p>Confirm the purpose, five topics, proposed phases and responsibilities.</p></li>
+        <li><h3>Present it to the principal</h3><p>Seek approval for the awareness activities, student feedback process, privacy rules and safeguarding arrangements.</p></li>
+        <li><h3>Complete the website</h3><p>Finalise the seven public pages, mobile layout, content, design and navigation.</p></li>
+        <li><h3>Build the secure student voice system</h3><p>Implement real submission storage, reviewer accounts and access controls once approved. The demo form never collects real submissions.</p></li>
+        <li><h3>Publish the announcement</h3><p>Introduce Common Ground through the official school portal.</p></li>
+        <li><h3>Run the feedback and awareness phases</h3><p>A 5&ndash;7 day feedback window, followed by the approved 45&ndash;50 minute session.</p></li>
+        <li><h3>Follow up and evaluate</h3><p>Share a recap, gather feedback and plan future awareness activities with school staff.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="page" id="p-team" aria-label="Our Team">
+  <div class="wrap">
+    <div class="intro">
+      <div class="label">The people behind the work</div>
+      <h2>Different roles. <em>Equal respect.</em></h2>
+      <p>Every member of the 2026&ndash;2027 Student Council has the same standing in Common Ground. The cards share one style and one weight, and each introduction describes what that role is responsible for.</p>
+    </div>
+    <div class="team">
+      <article class="card"><div class="person"><div class="initials">SA</div><div><h3>Sai Aashish</h3><div class="role">President</div></div></div><p>Leads overall coordination of the council and of Common Ground, keeps the team aligned with the school&rsquo;s approval process and makes sure every member has room to contribute.</p></article>
+      <article class="card"><div class="person"><div class="initials">HC</div><div><h3>Hannah Carlton</h3><div class="role">Vice President</div></div></div><p>Supports the President with coordination across the team and helps keep plans, timelines and communication organised from the first announcement to the follow-up.</p></article>
+      <article class="card"><div class="person"><div class="initials">MK</div><div><h3>Maha Karimi</h3><div class="role">Amazon House CEO</div></div></div><p>Brings Amazon House into the initiative and helps house members take part, share ideas and understand each phase of the programme.</p></article>
+      <article class="card"><div class="person"><div class="initials">SH</div><div><h3>Sahana</h3><div class="role">Amazon House CEO</div></div></div><p>Works alongside Amazon House members to encourage participation, carry student suggestions to the council and keep house communication respectful.</p></article>
+      <article class="card"><div class="person"><div class="initials">LT</div><div><h3>Lakshya Trivedi</h3><div class="role">Microsoft House CEO</div></div></div><p>Brings Microsoft House into the initiative and helps house members take part, share ideas and understand each phase of the programme.</p></article>
+      <article class="card"><div class="person"><div class="initials">MA</div><div><h3>Milan Arun</h3><div class="role">Apple House CEO</div></div></div><p>Brings Apple House into the initiative and helps house members take part, share ideas and understand each phase of the programme.</p></article>
+    </div>
+    <p class="small-note" style="margin-top:22px;margin-bottom:0">Members can add a personal message in their own words once the school approves the final site.</p>
+    <div class="endband" style="margin-top:36px">
+      <div><div class="label">Talk to us</div><p>The council is here to listen.</p></div>
+      <a class="btn" href="#voice">Share your voice <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- VOICE -->
+<section class="page" id="p-voice" aria-label="Your Voice">
+  <div class="wrap">
+    <div class="intro">
+      <div class="label">Your voice matters</div>
+      <h2>Share what you feel comfortable <em>sharing.</em></h2>
+      <p>You deserve to be heard with care. You do not have to include your name, and you do not need to tell your whole story.</p>
+    </div>
+    <div class="voice">
+      <aside class="aside">
+        <h3>This space should feel respectful, never pressured.</h3>
+        <p>The form on this page is a preview of how the student voice form will work. Please do not enter real names, contact details or personal experiences into it.</p>
+        <hr class="rule" style="margin:20px 0">
+        <p><strong>Privacy matters.</strong> The council does not publish submissions. In the approved system, only specifically authorised people can read them. If a message suggests someone may be unsafe, it may have to be shared with the right safeguarding adult so help can be arranged.</p>
+        <p>If you need help now, speak to a trusted adult or the school&rsquo;s designated safeguarding staff directly.</p>
+      </aside>
+      <div class="panel">
+        <span class="demo">Preview form &middot; not connected</span>
+        <h3>Your voice, in your own words</h3>
+        <p style="font-size:.93rem">This is a design preview. It does not send or save anything. A secure, school-approved system must be connected before real submissions are accepted.</p>
+        <form id="voiceForm" novalidate>
+          <div class="field">
+            <label for="shareMode">How would you like to share?</label>
+            <select id="shareMode">
+              <option value="anonymous">Anonymously, with no name</option>
+              <option value="named">I want to include my name</option>
+            </select>
+          </div>
+          <div class="field" id="nameField" hidden>
+            <label for="studentName">Name (optional)</label>
+            <input id="studentName" maxlength="80" autocomplete="off" placeholder="Only if you choose to">
+          </div>
+          <div class="field">
+            <label for="topicChoice">What is this about? (optional)</label>
+            <select id="topicChoice">
+              <option value="">Choose a topic, if you want</option>
+              <option>Gender equality and stereotypes</option>
+              <option>Boundaries and healthy relationships</option>
+              <option>Digital safety and privacy</option>
+              <option>Bullying, harassment and bystander support</option>
+              <option>Speaking up and getting help</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="voiceText">What would you like us to understand?</label>
+            <textarea id="voiceText" maxlength="3000" placeholder="Share only what you feel comfortable sharing. Please leave out other people&rsquo;s private details."></textarea>
+            <small class="count"><span>Keep it respectful. Do not send images through this form.</span><span id="charCount">0 / 3000</span></small>
+          </div>
+          <label class="check" for="understand"><input id="understand" type="checkbox"><span>I understand this is a preview that sends nothing, and that a real system needs school approval and clear privacy information.</span></label>
+          <button class="btn" type="submit">Preview the confirmation <span class="arrow" aria-hidden="true">&rarr;</span></button>
+          <div class="status" id="formStatus" role="status" aria-live="polite">Thank you for trying the preview. <strong>No message was sent or saved.</strong> In the approved version, this page will confirm how your message is handled and who can read it.</div>
+          <div class="status" id="formError" role="alert" style="border-color:#7a5a2c;background:rgba(227,191,114,.08);color:#f0dcae">Add a message and tick the box to see the preview confirmation.</div>
+          <p class="warning">For a real concern, use the school&rsquo;s trusted-adult or safeguarding route. This preview is not monitored and cannot provide support.</p>
+        </form>
+      </div>
+    </div>
+
+    <div class="section tight">
+      <div class="label violet">How submissions will be protected</div>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.5rem);margin:12px 0 22px">Reviewer access is <em>earned, not shared.</em></h2>
+      <div class="guard">
+        <article>
+          <h3>How access will work</h3>
+          <ol>
+            <li>The school approves the reviewers and the data-handling process.</li>
+            <li>A named reviewer is invited through a secure sign-in system.</li>
+            <li>They create their own account. Passwords are never shared.</li>
+            <li>A server-side role decides whether they can view, filter or mark submissions as reviewed.</li>
+            <li>Access can be revoked at any time, and important actions are logged.</li>
+          </ol>
+        </article>
+        <article>
+          <h3>What reviewers can do</h3>
+          <p style="margin-bottom:12px">Reviewers authorised by the school will be able to read submissions privately, filter them by topic, see whether a message is anonymous or named, mark it reviewed and flag concerns that need staff attention.</p>
+          <p>This area is separate from the public site. It needs accounts, a secure database and an agreed safeguarding process before it exists. A web page alone cannot protect private messages.</p>
+        </article>
+      </div>
+      <div class="note" style="margin-top:18px">
+        <strong>Our promise and our responsibility</strong>
+        <p>We treat every person with dignity and will never publish a student&rsquo;s name or personal story on this website. We cannot promise absolute secrecy. If someone may be at risk, information may need to go to designated school safeguarding staff to help keep that person safe.</p>
+      </div>
+      <div class="help"><strong>Need help now?</strong><p>Do not wait for a website feature. Speak to a trusted adult or the school&rsquo;s designated safeguarding staff through an approved school channel.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQS -->
+<section class="page" id="p-faqs" aria-label="FAQs">
+  <div class="wrap">
+    <div class="intro">
+      <div class="label">Clear answers</div>
+      <h2>What to know before <em>taking part.</em></h2>
+      <p>The purpose, limits and next steps, written for every learner.</p>
+    </div>
+    <div class="faq">
+      <details open><summary>Is this initiative for every gender?</summary><p>Yes. The focus is fairness, dignity, stereotypes, boundaries and respectful behaviour for everyone. No group is ranked above another.</p></details>
+      <details><summary>What topics will be covered?</summary><p>Gender equality and stereotypes; boundaries and healthy relationships; digital safety and privacy; bullying, harassment and bystander support; and speaking up and getting help.</p></details>
+      <details><summary>Can I share something anonymously?</summary><p>The design includes an anonymous option. The form on this site is a preview only. A real anonymous route has to be built, reviewed and approved by the school first.</p></details>
+      <details><summary>Who can read submissions?</summary><p>This site collects none. In the approved system, only school-authorised reviewers with their own accounts can read them, and access is controlled on the server. There is no shared password and no hidden page.</p></details>
+      <details><summary>Will the council keep every detail secret?</summary><p>We never publish names or private stories. Absolute secrecy cannot be promised when a student may be at risk. In that case information goes to designated safeguarding staff so appropriate help can be given.</p></details>
+      <details><summary>Do the sessions happen on this website?</summary><p>No. This site explains the initiative. Sessions use school-approved portal or meeting arrangements, and only after the relevant staff approve them.</p></details>
+      <details><summary>Do I have to share anything personal?</summary><p>No. Sessions use fictional scenarios, and nobody is asked to share personal details in front of others. Taking part never means telling your story.</p></details>
+      <details><summary>What should I do if I need help now?</summary><p>Speak to a trusted adult or the school&rsquo;s designated safeguarding staff through an approved school channel. If someone may be in danger, act immediately and do not wait for a website feature.</p></details>
+    </div>
+    <div class="endband">
+      <div><div class="label">One community. Shared responsibility.</div><p>Respect is something we practise.</p></div>
+      <a class="btn" href="#home">Back to home <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>&copy; 2026&ndash;2027 &middot; 21K School Student Council</span>
+    <span>Common Ground &middot; Student awareness initiative</span>
+    <span>Proposed programme, subject to school approval</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var ids=['home','initiative','topics','council','team','voice','faqs'];
+  var nav=document.getElementById('navlinks'),menu=document.getElementById('menu');
+  function show(id){
+    if(ids.indexOf(id)<0)id='home';
+    ids.forEach(function(p){document.getElementById('p-'+p).classList.toggle('active',p===id)});
+    document.querySelectorAll('.navlinks a').forEach(function(a){
+      if(a.dataset.page===id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+    });
+    nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='Menu';
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1))});
+  menu.addEventListener('click',function(){
+    var open=nav.classList.toggle('open');
+    menu.setAttribute('aria-expanded',String(open));
+    menu.textContent=open?'Close':'Menu';
+  });
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');
+    if(a&&a.getAttribute('href')==='#'+(location.hash.slice(1)||'home')){show(a.getAttribute('href').slice(1))}
+  });
+  show(location.hash.slice(1));
+
+  var welcome=document.getElementById('welcome');
+  function enter(){
+    welcome.classList.add('done');
+    try{sessionStorage.setItem('cgEntered','1')}catch(e){}
+  }
+  document.getElementById('enterSite').addEventListener('click',enter);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!welcome.classList.contains('done'))enter()});
+  try{if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)welcome.classList.add('done')}catch(e){}
+  try{if(sessionStorage.getItem('cgEntered')==='1')welcome.classList.add('done')}catch(e){}
+
+  var mode=document.getElementById('shareMode');
+  mode.addEventListener('change',function(){document.getElementById('nameField').hidden=mode.value!=='named'});
+  var text=document.getElementById('voiceText'),count=document.getElementById('charCount');
+  text.addEventListener('input',function(){count.textContent=text.value.length+' / 3000'});
+  document.getElementById('voiceForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    var ok=text.value.trim().length>0&&document.getElementById('understand').checked;
+    document.getElementById('formStatus').classList.toggle('show',ok);
+    document.getElementById('formError').classList.toggle('show',!ok);
+  });
+})();
+</script>
+
+</body></html>
